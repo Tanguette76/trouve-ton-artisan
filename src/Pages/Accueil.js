@@ -1,7 +1,12 @@
 
-import CarteArtisan from '../Components/CarteArtisan';
+import CarteArtisan from "../Components/CarteArtisan";
+import { useEffect, useState } from "react";
 
 function Accueil() {
+  const [artisans, setArtisans] = useState([]);
+  const [chargement, setChargement] = useState(true);
+  const [erreur, setErreur] = useState("");
+
   const etapes = [
     "Choisir la catégorie d'artisanat dans le menu.",
     "Choisir un artisan.",
@@ -9,30 +14,33 @@ function Accueil() {
     "Une réponse sera apportée sous 48h."
   ];
 
-  // Données temporaires pour tester l'affichage
-  const artisans = [
-    {
-      id: 1,
-      nom: "Dubois Martin",
-      specialite: "Menuisier",
-      note: 5,
-      ville: "Rennes"
-    },
-    {
-      id: 2,
-      nom: "Express Plomberie",
-      specialite: "Plombier",
-      note: 4,
-      ville: "Paris"
-    },
-    {
-      id: 3,
-      nom: "Atelier des Monts",
-      specialite: "Ébéniste",
-      note: 5,
-      ville: "Lyon"
+  useEffect(() => {
+    async function recupererArtisans() {
+      try {
+        const reponse = await fetch("http://localhost:3001/api/artisans");
+
+        if (!reponse.ok) {
+          throw new Error("Erreur lors de la récupération des artisans");
+        }
+
+        const donnees = await reponse.json();
+
+        // Garder uniquement les artisans du mois
+        const artisansDuMois = donnees.filter(
+          (artisan) => artisan.top_artisan === 1
+        );
+
+        setArtisans(artisansDuMois);
+      } catch (error) {
+        console.error(error);
+        setErreur("Impossible de charger les artisans pour le moment.");
+      } finally {
+        setChargement(false);
+      }
     }
-  ];
+
+    recupererArtisans();
+  }, []);
 
   return (
     <main>
@@ -56,14 +64,24 @@ function Accueil() {
       <section className="artisans-mois container">
         <h2>Les artisans du mois</h2>
 
-        <div className="liste-artisans">
-          {artisans.map((artisan) => (
-            <CarteArtisan
-              key={artisan.id}
-              artisan={artisan}
-            />
-          ))}
-        </div>
+        {chargement && <p>Chargement des artisans...</p>}
+
+        {erreur && <p role="alert">{erreur}</p>}
+
+        {!chargement && !erreur && artisans.length === 0 && (
+          <p>Aucun artisan du mois pour le moment.</p>
+        )}
+
+        {!chargement && !erreur && artisans.length > 0 && (
+          <div className="liste-artisans">
+            {artisans.map((artisan) => (
+              <CarteArtisan
+                key={artisan.id}
+                artisan={artisan}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
