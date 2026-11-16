@@ -1,5 +1,6 @@
 
-import { useState } from 'react';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [menuOuvert, setMenuOuvert] = useState(false);
@@ -8,18 +9,20 @@ function Header() {
     setMenuOuvert(!menuOuvert);
   }
 
+  function fermerMenu() {
+    setMenuOuvert(false);
+  }
+
   return (
     <header className="header">
       <div className="header-contenu">
 
-        
-<a href="/" className="logo">
-  <img
-    src="/Logo.png"
-    alt="Trouve ton artisan - Auvergne-Rhône-Alpes"
-  />
-</a>
-
+        <Link to="/" className="logo" onClick={fermerMenu}>
+          <img
+            src="/Logo.png"
+            alt="Trouve ton artisan - Auvergne-Rhône-Alpes"
+          />
+        </Link>
 
         <button
           className="bouton-menu"
@@ -34,13 +37,36 @@ function Header() {
 
         <nav
           id="menu-categories"
-          className={menuOuvert ? 'menu ouvert' : 'menu'}
+          className={menuOuvert ? "menu ouvert" : "menu"}
           aria-label="Catégories d'artisans"
         >
-          <a href="/categorie/batiment">Bâtiment</a>
-          <a href="/categorie/services">Services</a>
-          <a href="/categorie/fabrication">Fabrication</a>
-          <a href="/categorie/alimentation">Alimentation</a>
+          <Link
+            to="/artisans?categorie=Bâtiment"
+            onClick={fermerMenu}
+          >
+            Bâtiment
+          </Link>
+
+          <Link
+            to="/artisans?categorie=Services"
+            onClick={fermerMenu}
+          >
+            Services
+          </Link>
+
+          <Link
+            to="/artisans?categorie=Fabrication"
+            onClick={fermerMenu}
+          >
+            Fabrication
+          </Link>
+
+          <Link
+            to="/artisans?categorie=Alimentation"
+            onClick={fermerMenu}
+          >
+            Alimentation
+          </Link>
         </nav>
       </div>
 

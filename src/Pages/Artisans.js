@@ -1,8 +1,13 @@
 
 import { useEffect, useState } from "react";
 import CarteArtisan from "../Components/CarteArtisan";
+import { useSearchParams } from "react-router-dom";
 
 function Artisans() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categorie = searchParams.get("categorie") || "Toutes";
+
   const [artisans, setArtisans] = useState([]);
   const [chargement, setChargement] = useState(true);
   const [erreur, setErreur] = useState("");
@@ -29,9 +34,41 @@ function Artisans() {
     recupererArtisans();
   }, []);
 
+  // Filtrer les artisans selon la catégorie choisie
+  const artisansFiltres = artisans.filter((artisan) => {
+    return categorie === "Toutes" || artisan.categorie === categorie;
+  });
+
   return (
     <main className="container py-4">
       <h1>Tous les artisans</h1>
+
+      <div className="mb-4">
+        <label htmlFor="categorie" className="form-label">
+          Filtrer par catégorie :
+        </label>
+
+        <select
+          id="categorie"
+          className="form-select"
+          value={categorie}
+          onChange={(event) => {
+  const nouvelleCategorie = event.target.value;
+
+  if (nouvelleCategorie === "Toutes") {
+    setSearchParams({});
+  } else {
+    setSearchParams({ categorie: nouvelleCategorie });
+  }
+}}
+        >
+          <option value="Toutes">Toutes les catégories</option>
+          <option value="Bâtiment">Bâtiment</option>
+          <option value="Services">Services</option>
+          <option value="Fabrication">Fabrication</option>
+          <option value="Alimentation">Alimentation</option>
+        </select>
+      </div>
 
       {chargement && <p>Chargement des artisans...</p>}
 
@@ -39,10 +76,10 @@ function Artisans() {
 
       {!chargement && !erreur && (
         <>
-          <p>{artisans.length} artisan(s) disponible(s)</p>
+          <p>{artisansFiltres.length} artisan(s) disponible(s)</p>
 
           <div className="liste-artisans">
-            {artisans.map((artisan) => (
+            {artisansFiltres.map((artisan) => (
               <CarteArtisan
                 key={artisan.id}
                 artisan={artisan}
