@@ -13,9 +13,11 @@ function DetailArtisan() {
   useEffect(() => {
     async function recupererArtisan() {
       try {
-        const reponse = await fetch(
-          `http://localhost:3001/api/artisans/${id}`
-        );
+       const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+      const reponse = await fetch(
+       `${API_URL}/api/artisans/${id}`
+      );
 
         if (!reponse.ok) {
           throw new Error("Artisan introuvable");

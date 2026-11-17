@@ -12,7 +12,9 @@ async function envoyerFormulaire(event) {
   event.preventDefault();
 
   try {
-    const reponse = await fetch("http://localhost:3001/api/contact", {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+    const reponse = await fetch(`${API_URL}/api/contact`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

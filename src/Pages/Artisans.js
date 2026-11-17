@@ -16,7 +16,9 @@ function Artisans() {
   useEffect(() => {
     async function recupererArtisans() {
       try {
-        const reponse = await fetch("http://localhost:3001/api/artisans");
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+        const reponse = await fetch(`${API_URL}/api/artisans`); 
 
         if (!reponse.ok) {
           throw new Error("Erreur lors du chargement");
