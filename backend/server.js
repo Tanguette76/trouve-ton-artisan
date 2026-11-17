@@ -2,6 +2,7 @@
 const express = require("express");
 const db = require("./db");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -10,10 +11,11 @@ app.use(cors({
 }));  
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../dist")));
 
-// Vérifier que le serveur fonctionne
+// Afficher le site React à l'accueil
 app.get("/", (req, res) => {
-  res.json({ message: "API Trouve ton artisan opérationnelle !" });
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 // Récupérer les artisans depuis MySQL
@@ -136,6 +138,10 @@ res.status(201).json({
       message: "Erreur lors du traitement du formulaire.",
     });
   }
+});
+
+app.get("/{*chemin}", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
 app.listen(PORT, () => {
