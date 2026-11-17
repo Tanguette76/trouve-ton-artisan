@@ -329,3 +329,15 @@ body {
     display: block;
   }
 }
+
+.lien-carte {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  * {
+    text-decoration: none;
+  }
+}
