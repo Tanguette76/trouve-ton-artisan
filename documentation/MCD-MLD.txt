@@ -1,0 +1,139 @@
+# MCD et MLD — Trouve ton artisan
+
+## 1. Présentation
+
+Pour mon projet Trouve ton artisan, j'ai créé une base de données MySQL appelée `trouve_ton_artisan`.
+
+Elle sert à stocker les informations des artisans et les messages envoyés depuis le formulaire de contact.
+
+J'ai utilisé deux tables : `artisans` et `messages`.
+
+## 2. Le MCD (Modèle Conceptuel de Données)
+
+Le MCD permet de voir quelles informations sont nécessaires pour le site et comment elles sont liées entre elles.
+
+Dans mon projet, j'ai deux entités.
+
+### ARTISAN
+
+Cette entité contient les informations des artisans :
+
+- **id** : identifiant de l'artisan
+- nom
+- specialite
+- ville
+- note
+- description
+- email
+- site_web
+- categorie
+- top_artisan
+
+### MESSAGE
+
+Cette entité contient les informations envoyées par les visiteurs :
+
+- **id** : identifiant du message
+- nom
+- email
+- objet
+- message
+- date_envoi
+
+### Relation entre les deux entités
+
+J'ai appelé cette relation **REÇOIT**.
+
+Un artisan peut recevoir plusieurs messages, mais chaque message est envoyé à un seul artisan.
+
+Les cardinalités sont donc :
+
+- **ARTISAN (0,N)** : un artisan peut ne recevoir aucun message ou en recevoir plusieurs.
+- **MESSAGE (1,1)** : un message est obligatoirement lié à un seul artisan.
+
+Voici une représentation simple de mon MCD :
+
+```text
++------------------+                 +------------------+
+|     ARTISAN      |                 |     MESSAGE      |
++------------------+                 +------------------+
+| id               |                 | id               |
+| nom              |                 | nom              |
+| specialite       |                 | email            |
+| ville            |                 | objet            |
+| note             |                 | message          |
+| description      |                 | date_envoi       |
+| email            |                 +------------------+
+| site_web         |                          |
+| categorie        |                          |
+| top_artisan      |                          |
++------------------+                          |
+         |                                    |
+       (0,N)                                (1,1)
+         |                                    |
+         +------------- REÇOIT ---------------+
+```
+
+## 3. Le MLD (Modèle Logique de Données)
+
+Le MLD reprend les informations du MCD, mais sous la forme des tables que j'utilise dans MySQL.
+
+### Table ARTISANS
+
+```text
+ARTISANS (
+  id [PK],
+  nom,
+  specialite,
+  ville,
+  note,
+  description,
+  email,
+  site_web,
+  categorie,
+  top_artisan
+)
+```
+
+### Table MESSAGES
+
+```text
+MESSAGES (
+  id [PK],
+  artisan_id [FK],
+  nom,
+  email,
+  objet,
+  message,
+  date_envoi
+)
+```
+
+- **PK** signifie clé primaire. Elle permet d'identifier chaque ligne d'une table.
+- **FK** signifie clé étrangère. Elle permet de faire le lien entre deux tables.
+
+Dans mon projet, `artisan_id` dans la table `messages` fait référence à `id` dans la table `artisans`.
+
+C'est ce qui permet de savoir à quel artisan correspond chaque message.
+
+## 4. Le MPD (Modèle Physique de Données)
+
+Le MPD correspond à la base de données que j'ai créée avec MySQL et phpMyAdmin.
+
+La table `artisans` contient les 17 artisans fournis pour le projet.
+
+La table `messages` sert à enregistrer les demandes envoyées depuis le formulaire de contact.
+
+J'ai ajouté une clé primaire dans chaque table et une clé étrangère pour relier les messages aux artisans.
+
+Le fichier SQL qui permet de recréer la base se trouve dans le dossier `database`.
+
+## 5. Fonctionnement avec le site
+
+Quand un visiteur consulte la fiche d'un artisan, React récupère ses informations grâce à l'API Express.
+
+Quand il remplit le formulaire de contact, les informations sont envoyées au serveur, qui vérifie les champs avant d'enregistrer le message dans MySQL.
+
+J'ai utilisé des requêtes SQL paramétrées pour éviter d'insérer directement les valeurs saisies dans les requêtes.
+
+La base de données permet donc au site d'afficher les artisans et de conserver les messages qui leur sont destinés.

@@ -1,100 +1,68 @@
 # Trouve ton artisan
 
-## Présentation du projet
+## À propos du projet
 
-**Trouve ton artisan** est un site web réalisé dans le cadre de ma formation au Centre Européen de Formation (CEF).
+J'ai réalisé ce site dans le cadre de ma formation de développeur web au Centre Européen de Formation (CEF).
 
-L'objectif est de permettre aux utilisateurs de rechercher des artisans de la région Auvergne-Rhône-Alpes, de consulter leurs informations et de les contacter à l'aide d'un formulaire.
+Le but du projet est de créer un site qui permet de trouver des artisans en Auvergne-Rhône-Alpes, de consulter leurs informations et de les contacter grâce à un formulaire.
 
-## Fonctionnalités
+Pour ce projet, j'ai utilisé React pour le site, Express pour le serveur et MySQL pour la base de données.
 
-- Affichage des artisans mis en avant sur la page d'accueil.
-- Consultation de la liste des artisans.
-- Recherche d'un artisan par nom, spécialité ou ville.
-- Filtrage des artisans par catégorie : Bâtiment, Services, Fabrication et Alimentation.
-- Consultation de la fiche détaillée d'un artisan.
-- Formulaire de contact avec enregistrement des messages dans la base de données.
+## Ce que permet de faire le site
 
-**Remarque :** le formulaire enregistre les messages dans MySQL. Il ne les envoie pas directement par e-mail.
+- Consulter les artisans mis en avant sur la page d'accueil.
+- Rechercher un artisan par son nom, sa spécialité ou sa ville.
+- Afficher les artisans par catégorie.
+- Accéder à la fiche d'un artisan pour voir ses informations.
+- Remplir un formulaire pour contacter un artisan.
+
+Les messages envoyés depuis le formulaire sont enregistrés dans la base de données. Il n'y a pas d'envoi d'e-mail automatique.
 
 ## Technologies utilisées
 
-**Frontend :**
-- React
-- Vite
-- JavaScript
-- React Router
-- Bootstrap
-- Sass / SCSS
+Pour réaliser ce projet, j'ai utilisé :
 
-**Backend :**
-- Node.js
-- Express
-- MySQL / MariaDB
-- mysql2
-- dotenv
-- cors
+- **React et JavaScript** pour les pages du site.
+- **Bootstrap et SCSS** pour la mise en forme.
+- **Node.js et Express** pour créer l'API.
+- **MySQL** pour stocker les artisans et les messages.
+- **Figma** pour préparer les maquettes.
+- **Git et GitHub** pour sauvegarder et partager mon travail.
 
-**Outils :**
-- Visual Studio Code
-- Figma
-- XAMPP
-- phpMyAdmin
-- Git et GitHub
-
-## Structure du projet
-
-```text
-trouve-ton-artisan/
-├── backend/
-│   ├── db.js
-│   ├── server.js
-│   └── package.json
-├── database/
-│   └── trouve_ton_artisan.sql
-├── public/
-├── src/
-│   ├── Components/
-│   ├── Pages/
-│   ├── Styles/
-│   ├── App.js
-│   └── main.js
-├── package.json
-└── README.md
-```
+J'ai travaillé avec Visual Studio Code et XAMPP pour faire fonctionner le projet en local.
 
 ## Installation du projet
 
-### 1. Prérequis
+Pour lancer le site sur un ordinateur, il faut avoir installé Node.js et XAMPP (ou un serveur MySQL).
 
-Installer :
-- Node.js et npm
-- XAMPP ou un serveur MySQL / MariaDB
+### 1. Installer les dépendances
 
-### 2. Récupérer le projet
-
-Cloner le dépôt GitHub, puis ouvrir le dossier du projet dans Visual Studio Code.
-
-### 3. Installer le frontend
-
-Dans un terminal ouvert à la racine du projet :
+Ouvrir un terminal à la racine du projet et saisir :
 
 ```bash
 npm install
 ```
 
-### 4. Préparer la base de données
+Ensuite, aller dans le dossier du serveur :
 
-1. Démarrer MySQL avec XAMPP.
-2. Ouvrir phpMyAdmin.
-3. Créer une base de données nommée `trouve_ton_artisan`.
-4. Importer le fichier `database/trouve_ton_artisan.sql`.
+```bash
+cd backend
+npm install
+```
 
-Le fichier SQL contient les artisans et la structure de la table des messages.
+### 2. Installer la base de données
 
-### 5. Configurer le backend
+Démarrer MySQL avec XAMPP, puis ouvrir phpMyAdmin.
 
-Dans le dossier `backend`, créer un fichier `.env` contenant :
+Créer une base de données appelée `trouve_ton_artisan` et importer le fichier :
+
+`database/trouve_ton_artisan.sql`
+
+La base contient les informations de 17 artisans ainsi qu'une table pour enregistrer les messages du formulaire.
+
+### 3. Configurer le serveur
+
+Dans le dossier `backend`, créer un fichier `.env` avec les informations suivantes :
 
 ```env
 DB_HOST=localhost
@@ -104,56 +72,55 @@ DB_NAME=trouve_ton_artisan
 PORT=3001
 ```
 
-Adapter `DB_USER` et `DB_PASSWORD` selon la configuration locale de MySQL.
+Le nom d'utilisateur et le mot de passe sont à adapter selon la configuration de MySQL.
 
-Le fichier `.env` contient des informations de configuration privées et ne doit pas être publié sur GitHub.
+### 4. Lancer le serveur
 
-### 6. Installer et démarrer le backend
-
-Dans un terminal :
+Depuis le dossier `backend`, saisir :
 
 ```bash
-cd backend
-npm install
 node server.js
 ```
 
-L'API est accessible localement à l'adresse :
+Le serveur fonctionne sur `http://localhost:3001`.
 
-`http://localhost:3001`
+### 5. Lancer le site
 
-### 7. Démarrer le frontend
-
-Ouvrir un deuxième terminal à la racine du projet :
+Ouvrir un deuxième terminal à la racine du projet et saisir :
 
 ```bash
 npm run dev
 ```
 
-Ouvrir ensuite l'adresse affichée par Vite, généralement :
+Le site est normalement accessible sur :
 
 `http://localhost:5173`
 
-Le backend et le frontend doivent fonctionner en même temps pour accéder aux données des artisans et utiliser le formulaire de contact.
+Il faut laisser les deux terminaux ouverts pour que le site puisse récupérer les informations depuis la base de données.
 
-## Base de données
+## Organisation de la base de données
 
-La base de données `trouve_ton_artisan` contient deux tables :
+J'ai créé deux tables :
 
-- `artisans` : informations des 17 artisans.
-- `messages` : messages envoyés depuis les formulaires de contact.
+- `artisans` : elle contient les informations des artisans.
+- `messages` : elle conserve les messages envoyés depuis le formulaire de contact.
 
-Chaque message est associé à un artisan grâce à une clé étrangère `artisan_id`.
+Chaque message est relié à un artisan grâce à son identifiant.
+
+Les explications sur le MCD et le MLD se trouvent dans le fichier `documentation/MCD-MLD.md`.
 
 ## Sécurité
 
-Plusieurs mesures de sécurité ont été mises en place :
+J'ai ajouté quelques vérifications dans le projet :
 
-- Utilisation de requêtes SQL paramétrées pour limiter les risques d'injection SQL.
-- Validation des données du formulaire côté serveur.
-- Vérification de l'existence de l'artisan avant l'enregistrement d'un message.
-- Conservation des identifiants de connexion à la base de données dans un fichier `.env` non versionné.
+- Les champs du formulaire sont vérifiés avant l'enregistrement.
+- Les requêtes SQL utilisent des paramètres pour éviter de mettre directement les saisies des utilisateurs dans les requêtes.
+- Les informations de connexion à MySQL sont conservées dans un fichier `.env`, qui n'est pas envoyé sur GitHub.
 
-## Auteur
+## Maquettes
 
-Projet réalisé dans le cadre de la formation Développeur Web et Web Mobile au Centre Européen de Formation (CEF).
+Les maquettes du site ont été réalisées avec Figma pour les versions ordinateur, tablette et mobile.
+
+## Contexte
+
+Ce projet a été réalisé dans le cadre de mon devoir de formation au CEF.
