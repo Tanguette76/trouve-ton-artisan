@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import FormulaireContact from "../Components/FormulaireContact";
 
 function DetailArtisan() {
   const { id } = useParams();
@@ -73,6 +74,8 @@ function DetailArtisan() {
               </a>
             </p>
           )}
+
+          <FormulaireContact artisan={artisan} />
         </article>
       )}
     </main>
