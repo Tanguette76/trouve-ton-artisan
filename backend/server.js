@@ -11,11 +11,11 @@ app.use(cors({
 }));  
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../dist")));
+app.use(express.static(path.join(__dirname, "../../www")));
 
 // Afficher le site React à l'accueil
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
+  res.sendFile(path.join(__dirname, "../../www/index.html"));
 });
 
 // Récupérer les artisans depuis MySQL
@@ -141,7 +141,7 @@ res.status(201).json({
 });
 
 app.get("/{*chemin}", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
+  res.sendFile(path.join(__dirname, "../../www/index.html"));
 });
 
 app.listen(PORT, () => {
