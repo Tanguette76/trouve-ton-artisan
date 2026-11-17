@@ -128,6 +128,7 @@ app.post("/api/contact", async (req, res) => {
 res.status(201).json({
   message: "Votre message a bien été enregistré.",
 });
+
   } catch (error) {
     console.error("Erreur formulaire :", error);
 
