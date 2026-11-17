@@ -30,6 +30,38 @@ app.get("/api/artisans", async (req, res) => {
   }
 });
 
+
+app.get("/api/artisans/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: "Identifiant invalide",
+      });
+    }
+
+    const [artisans] = await db.query(
+      "SELECT * FROM artisans WHERE id = ?",
+      [id]
+    );
+
+    if (artisans.length === 0) {
+      return res.status(404).json({
+        message: "Artisan introuvable",
+      });
+    }
+
+    res.json(artisans[0]);
+  } catch (error) {
+    console.error("Erreur MySQL :", error);
+
+    res.status(500).json({
+      message: "Impossible de récupérer cet artisan",
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
