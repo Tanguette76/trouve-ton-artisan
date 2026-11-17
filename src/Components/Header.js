@@ -1,9 +1,11 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const [recherche, setRecherche] = useState("");
+const navigate = useNavigate();
 
   function changerMenu() {
     setMenuOuvert(!menuOuvert);
@@ -73,13 +75,24 @@ function Header() {
       <form
         className="recherche"
         role="search"
-        onSubmit={(event) => event.preventDefault()}
-      >
+        onSubmit={(event) => {
+  event.preventDefault();
+
+  const texte = recherche.trim();
+
+  if (texte) {
+    navigate(`/artisans?recherche=${encodeURIComponent(texte)}`);
+  }
+}}
+>
         <input
-          type="search"
-          placeholder="Rechercher un artisan..."
-          aria-label="Rechercher un artisan"
+        type="search"
+        placeholder="Rechercher un artisan..."
+        aria-label="Rechercher un artisan"
+        value={recherche}
+        onChange={(event) => setRecherche(event.target.value)}
         />
+
         <button type="submit" aria-label="Rechercher">
           🔍
         </button>

@@ -7,6 +7,7 @@ function Artisans() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const categorie = searchParams.get("categorie") || "Toutes";
+  const recherche = searchParams.get("recherche") || "";
 
   const [artisans, setArtisans] = useState([]);
   const [chargement, setChargement] = useState(true);
@@ -36,8 +37,18 @@ function Artisans() {
 
   // Filtrer les artisans selon la catégorie choisie
   const artisansFiltres = artisans.filter((artisan) => {
-    return categorie === "Toutes" || artisan.categorie === categorie;
-  });
+  const correspondCategorie =
+    categorie === "Toutes" || artisan.categorie === categorie;
+
+  const texteRecherche = recherche.toLowerCase().trim();
+
+  const correspondRecherche =
+    artisan.nom.toLowerCase().includes(texteRecherche) ||
+    artisan.specialite.toLowerCase().includes(texteRecherche) ||
+    artisan.ville.toLowerCase().includes(texteRecherche);
+
+  return correspondCategorie && correspondRecherche;
+});
 
   return (
     <main className="container py-4">
